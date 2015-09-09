@@ -57,7 +57,8 @@ find /etc/php5/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g
 # nginx site conf
 RUN rm -Rf /etc/nginx/conf.d/* && \
 rm -rf /etc/nginx/sites-available/default && \
-mkdir -p /etc/nginx/ssl/
+mkdir -p /etc/nginx/ssl/ && \
+mkdir -p /usr/share/nginx/html/public/
 ADD ./nginx-site.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
@@ -77,7 +78,7 @@ RUN chmod 755 /start.sh
 VOLUME ["/usr/share/nginx/html"]
 
 # add test PHP file
-ADD ./index.php /usr/share/nginx/html/index.php
+ADD ./index.php /usr/share/nginx/html/public/index.php
 RUN chown -Rf www-data.www-data /usr/share/nginx/html/
 
 # Expose Ports
