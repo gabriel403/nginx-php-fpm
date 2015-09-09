@@ -5,7 +5,7 @@ The source files for this project can be found here: [https://github.com/ngineer
 
 If you have any improvements please submit a pull request.
 ### Docker hub repository
-The Docker hub build can be found here: [https://registry.hub.docker.com/u/richarvey/nginx-php-fpm/](https://registry.hub.docker.com/u/richarvey/nginx-php-fpm/)
+The Docker hub build can be found here: [https://registry.hub.docker.com/u/gabriel403/nginx-php-fpm/](https://registry.hub.docker.com/u/gabriel403/nginx-php-fpm/)
 
 ## Nginx Versions
 - Mainline Version: **1.9.4**
@@ -16,30 +16,30 @@ The Docker hub build can be found here: [https://registry.hub.docker.com/u/richa
 Pull the image from the docker index rather than downloading the git repo. This prevents you having to build the image on every docker host.
 
 ```
-docker pull richarvey/nginx-php-fpm:latest
+docker pull gabriel403/nginx-php-fpm:latest
 ```
 To pull the Stable Version:
 
 ```
-docker pull richarvey/nginx-php-fpm:stable
+docker pull gabriel403/nginx-php-fpm:stable
 ```
 To pull the Mainline Version:
 
 ```
-docker pull richarvey/nginx-php-fpm:mainline
+docker pull gabriel403/nginx-php-fpm:mainline
 ```
 ## Running
 To simply run the container:
 
 ```
-sudo docker run --name nginx -p 8080:80 -d richarvey/nginx-php-fpm
+sudo docker run --name nginx -p 8080:80 -d gabriel403/nginx-php-fpm
 ```
 You can then browse to http://\<docker_host\>:8080 to view the default install files.
 ### Volumes
-If you want to link to your web site directory on the docker host to the container run:
+If you want to link to your web site directory (which must contain a public folder, as the webroot) on the docker host to the container run:
 
 ```
-sudo docker run --name nginx -p 8080:80 -v /your_code_directory:/usr/share/nginx/html -d richarvey/nginx-php-fpm
+sudo docker run --name nginx -p 8080:80 -v /your_code_directory:/usr/share/nginx/html -d gabriel403/nginx-php-fpm
 ```
 ### Pulling code from git
 One of the nice features of this container is its ability to pull code from a git repository with a couple of environmental variables passed at run time.
@@ -49,13 +49,13 @@ One of the nice features of this container is its ability to pull code from a gi
 To run the container and pull code simply specify the GIT_REPO URL including *git@* and then make sure you have a folder on the docker host with your id_rsa key stored in it:
 
 ```
-sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git'  -v /opt/ngddeploy/:/root/.ssh -p 8080:80 -d richarvey/nginx-php-fpm
+sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git'  -v /opt/ngddeploy/:/root/.ssh -p 8080:80 -d gabriel403/nginx-php-fpm
 ```
 
 To pull a repository and specify a branch add the GIT_BRANCH environment variable:
 
 ```
-sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -e 'GIT_BRANCH=stage' -v /opt/ngddeploy/:/root/.ssh -p 8080:80 -d richarvey/nginx-php-fpm
+sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -e 'GIT_BRANCH=stage' -v /opt/ngddeploy/:/root/.ssh -p 8080:80 -d gabriel403/nginx-php-fpm
 ```
 ### Linking
 Linking to containers also exposes the linked container environment variables which is useful for templating and configuring web apps.
@@ -87,7 +87,7 @@ MYSQL_PORT=tcp://172.17.0.236:3306
 To link the container launch like this:
 
 ```
-sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -v /opt/ngddeploy/:/root/.ssh -p 8080:80 --link some-mysql:mysql -d richarvey/nginx-php-fpm
+sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -v /opt/ngddeploy/:/root/.ssh -p 8080:80 --link some-mysql:mysql -d gabriel403/nginx-php-fpm
 ```
 ### Enabling SSL or Special Nginx Configs
 As with all docker containers its possible to link resources from the host OS to the guest. This makes it really easy to link in custom nginx default config files or extra virtual hosts and SSL enabled sites. For SSL sites first create a directory somewhere such as */opt/deployname/ssl/*. In this directory drop you SSL cert and Key in. Next create a directory for your custom hosts such as  */opt/deployname/sites-enabled*. In here load your custom default.conf file which references your SSL cert and keys at the location, for example:  */etc/nginx/ssl/xxxx.key*
@@ -95,7 +95,7 @@ As with all docker containers its possible to link resources from the host OS to
 Then start your container and connect these volumes like so:
 
 ```
-sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -v /opt/ngddeploy/:/root/.ssh -v /opt/deployname/ssl:/etc/nginx/ssl -v /opt/deployname/sites-enabled:/etc/nginx/sites-enabled -p 8080:80 --link some-mysql:mysql -d richarvey/nginx-php-fpm
+sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -v /opt/ngddeploy/:/root/.ssh -v /opt/deployname/ssl:/etc/nginx/ssl -v /opt/deployname/sites-enabled:/etc/nginx/sites-enabled -p 8080:80 --link some-mysql:mysql -d gabriel403/nginx-php-fpm
 ```
 
 ## Special Features
@@ -129,7 +129,7 @@ If you want to link to an external MySQL DB and not using linking you can pass v
 Example:
 
 ```
-sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -e 'GIT_BRANCH=stage' -e 'MYSQL_HOST=host.x.y.z' -e 'MYSQL_USER=username' -e 'MYSQL_PASS=password' -v /opt/ngddeploy/:/root/.ssh -p 8080:80 -d richarvey/nginx-php-fpm
+sudo docker run -e 'GIT_REPO=git@git.ngd.io:ngineered/ngineered-website.git' -e 'GIT_BRANCH=stage' -e 'MYSQL_HOST=host.x.y.z' -e 'MYSQL_USER=username' -e 'MYSQL_PASS=password' -v /opt/ngddeploy/:/root/.ssh -p 8080:80 -d gabriel403/nginx-php-fpm
 ```
 
 This will expose the following variables that can be used to template your code.
@@ -156,4 +156,3 @@ In order to speed up install time if templating is not required and you have a l
 
 ### Template anything
 Yes ***ANYTHING***, any variable exposed by a linked container or the **-e** flag lets you template your config files. This means you can add redis, mariaDB, memcache or anything you want to your application very easily.
-
