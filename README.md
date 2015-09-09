@@ -36,7 +36,7 @@ sudo docker run --name nginx -p 8080:80 -d gabriel403/nginx-php-fpm
 ```
 You can then browse to http://\<docker_host\>:8080 to view the default install files.
 ### Volumes
-If you want to link to your web site directory on the docker host to the container run:
+If you want to link to your web site directory (which must contain a public folder, as the webroot) on the docker host to the container run:
 
 ```
 sudo docker run --name nginx -p 8080:80 -v /your_code_directory:/usr/share/nginx/html -d gabriel403/nginx-php-fpm
