@@ -13,6 +13,8 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install software requirements
 RUN apt-get update && \
 apt-get install -y software-properties-common && \
+locale-gen en_GB.UTF-8 && \
+export LANG=en_GB.UTF-8 && \
 nginx=development && \
 add-apt-repository ppa:nginx/$nginx && \
 add-apt-repository ppa:ondrej/php5-5.6 && \
